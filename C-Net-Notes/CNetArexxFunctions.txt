@@ -1,0 +1,197 @@
+ADDKEYS {s}
+Add the characters {s} to the input buffer, as if the user had typed them.
+
+ADDPOINTS {n}
+Add the value {n} to the user's "DoorPoints" field. To subtract, use a negative number in parentheses!
+
+ADDTIME {n}
+Add the value {n} (in TENTHS of minutes) to the user's time remaining for the call and day. To subtract time, use a negative number in parentheses.
+
+BAUD {n}
+Set the baud rate to {n}.
+
+BBSCOMMAND {s}
+Execute the BBSCOMMAND {s}. {s} must be a command found on the "available everywhere" menu (see the BBSMENU file).
+
+BBSIDENTIFY {arg}
+	{arg} 		returns
+	ABBEREXX 	"1.0"
+	BBS 		"2.35" or current CNet version
+	EMULATION 	"ASCII" or "ANSI"
+	NAME 		Your BBS's name (bbstext line 9)
+	SYSOP 		Sysop's name (bbstext line 10)
+	TERM 		<baud> <columns> <rows> <line>
+	USER 		"<username>" "<callingfrom>" <access>
+	<access> is returned as GUEST for new users, MEMBER for other users, SYSOP for account #1, CO-SYSOP for any other account with maintenance access.
+
+BUFFERFLUSH
+Empty the current serial and keyboard input buffers.
+
+CALLEDITOR {n}
+This invokes the user's default editor with {n} maximum lines (0 for default). The current contents of the editor's buffer are loaded, and the results are re-saved. "1" is returned if the temp buffer is not empty ("0" otherwise).
+
+CHANGEWHAT {s}
+Set the user's COMMAND field in WHO displays and the control panel. This feature may not yet be implemented. The command is added for upward compatibility.
+
+CHANGEWHERE {s}
+Set the user's WHERE field in WHO displays and the control panel. RESULT will be set to the OLD value of the field.
+
+CHECKABORT
+Returns 1 if user has pressed Control-C or SPACEBAR, 0 otherwise. You should call this AFTER a line of output has occurred. Each time something is printed, this is reset to 0.
+
+CHECKIO
+Returns 0 if the input buffer is empty, or 1 otherwise.
+
+CLEAREDITOR
+Clears the contents of the editor temp file. Use this before CALLEDITOR if you do not use LOADEDITOR.
+
+CLOSEDISPLAY
+Close the port screen or workbench window.
+
+CLS
+Sends the screen-clear code.
+
+DROPCARRIER
+Clear the phone line.
+
+FEEDBACK
+This performs the standard FEEDBACK command, allowing the user to leave a message to the SysOp(s).
+
+FINDACCOUNT {s}
+This function accepts either an account number or a handle. It performs the familiar handle-search if necessary. The account number is returned if there is no problem. 0 is returned otherwise.
+
+GETCHAR
+Wait for a single key to be pressed.
+
+GETCARRIER
+Returns 1 is there is a carrier (or local mode), 0 otherwise.
+
+GETPORTID {port}
+Give account # for user on port {port}. A result of -1 means NO user is on that port.
+
+GETUSER {n}
+Get a variable from memory. See the description of this command in the next section.
+
+GETSCRATCH {n}
+Operates like GETUSER, but reads user data from the internal "scratch" account structure. With LOADSCRATCH, this is useful for examining user's accounts other than the current user's.
+
+GETWHERE {PORT}
+Tell what user on port {port} is doing.
+
+HANGUP
+Same as DROPCARRIER.
+
+IREADY
+Same as CHECKIO.
+
+LOADEDITOR {s}
+This will read the filename given by {s} into the editor temp buffer.
+
+LOADSCRATCH {n}
+This command should be performed before GETSCRATCH's. The argument must be a valid account number. RESULT will carry a "1" if everything was loaded OK, "0" otherwise. This command LOCKS the account specified. The AREXX program ALONE then has access to it. To signal that the program is DONE with the account, each LOADSCRATCH {id} must eventually be followed by a corresponding SAVESCRATCH {id}.
+
+LOGENTRY {s}
+Add the text given by {s} to the call log.
+
+MAYGETCHAR
+Returns a character from the input buffer, or "nochar" if the buffer is empty.
+
+MODEM {n}
+{n} is 0 to totally close the serial port, 1 to open it, 2 to stop all read I/O, but keep the port open.
+
+NEWLINE
+Sends the newline code.
+
+OPENDISPLAY
+Attempt to open the port's screen or workbench window. It may take a few seconds for the display to open.
+
+PRINT {arg}
+Same as TRANSMIT.
+
+PROMPT <length> {arg} '"<prompt>"'
+	<length> is the maximum number of characters to input.
+	{arg} is one of:
+	NORMAL
+	HIDE : password input
+	YESNO : Yes/No, Yes is default
+	NOYES : Yes/No, No is default
+	<prompt> must be surrounded by double quotes, and then single quotes, so that AREXX will actually send the quotes to CNet.
+	
+PUTSCRATCH {n}
+Takes an argument of the same form as GETSCRATCH (note, however, that you should not use the 7 digit format with put/get scratch, only the numbers 1-41.
+
+PUTUSER {n}
+The opposite of GETUSER. Use SETOBJECT before using PUTUSER.
+
+QUERY {s}
+Input a line, with a prompt of {s}. Up to 80 characters may be entered.
+
+RECEIVE
+Input a line, without a prompt. Up to 80 characters may be entered.
+
+RESETMODEM
+Send the modem's initialization commands.
+
+SAVEEDITOR {s}
+Write the contents of the editor temp buffer to the file specified by {s}. If the file {s} already exists, it will be overwritten. RESULT will carry a "1" if everything was written OK, "0" otherwise.
+
+SAVESCRATCH {n}
+{n} is the account number previously used in a LOADSCRATCH command. If {n} is a NEGATIVE ID number, the user data will not actually be SAVED, only the LOCK removed. This is useful for programs which just read account information, and do not wish to add the overhead of saving an account to disk for no reason.
+
+SCREENOUT {s}
+Display {s} only to the screen, not the modem.
+
+SELECTFILE {path}
+Add the file given by {path} to the user's select-list
+
+SEND {arg}
+Sends the given string without translation of any kind. (no MCI, etc).
+
+SENDFILE {s}
+Read the file given by the path {s}.
+
+SENDMODEM {s}
+Send the string given by {s} to the modem ONLY, not to the screen.
+
+SENDSTRING {s}
+Print the text given by {s}. No carriage return is printed afterward.
+
+SETMAILSUBJ {s}
+This command should be performed before EACH WRITEMAIL in 
+order to set the SUBJECT of the mail about to be sent.
+
+SETMINFREE {s}
+This command tells CNet when to STOP an upload-in-progress due to critical disk space. {s} should be the lowest free-BYTES on the hard drive.
+
+SETNODELOCATION {arg}
+Same as CNet's NEW command CHANGEWHERE.
+
+SETOBJECT {s}
+Use this command before each PUTUSER or PUTSCRATCH to specify the data you wish to write into the user's account.
+
+SETPROTOCOL {s}
+This command should be used before an XUP or XDN. {s} should be a SINGLE character, matching a character in BBSPROTO to designate a specific protocol. If you wish to allow the user to choose his own protocol, send {s} as a NULL string.
+
+SHUTDOWN
+Does nothing. Included for compatibility.
+
+SPAWN {s}
+Run the AREXX command given by {s}. Usually this is the LAST command in an AREXX door, so that control may be transferred to another door.
+
+SYSOPLOG {arg}
+Same as LOGENTRY.
+
+TRANSMIT {s}
+Print the text given by {s}, and then a carriage return. MCI is translated here.
+
+VERSION
+Returns the current CNet version.
+
+WRITEMAIL {s}
+Write the contents of the editor temp buffer to the user's mailbox specified by {s}. {s} must be a valid account number. RESULT will carry a "1" if everything was sent OK, "0" otherwise. Use SETMAILSUBJ before WRITEMAIL.
+
+XDN {s}
+This command has been CHANGED so that it now performs an XPR file download of the specified file {s}. The command SETPROTOCOL must be used first.
+
+XUP {s}
+This command has also changed with XDOWN in the same way. If the transfer is a batch protocol, it is OK to simply pass the PATH here.

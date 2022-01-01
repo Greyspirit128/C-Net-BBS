@@ -11,4 +11,4 @@ Shorter version
 CurPos:procedure;rerturn '['Arg(2)';'Arg(1)'f'
 
 example 
-transmit CurPos(10,5)   /*Transmit is a C-Net Build in Arexx command*/
+transmit CurPos(10,5)   /*Transmit is a C-Net Built in Arexx command*/
